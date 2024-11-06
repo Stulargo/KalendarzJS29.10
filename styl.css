@@ -1,0 +1,52 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-size: cover;
+    transition: background 1s ease;
+  }
+
+  #kartka {
+    width: 360px;
+    padding: 40px;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  #kartka:hover {
+    transform: scale(1.02);
+  }
+
+  #miesiacRok {
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  #data {
+    font-size: 5.5em;
+    font-weight: 800;
+    margin: 20px 0;
+    letter-spacing: 1px;
+  }
+
+  #dzienTygodnia, #licznik {
+    font-size: 1.1em;
+    color: #666;
+    margin-top: 25px;
+  }
+
+  .niedziela { color: red; font-weight: bold; }
+
+  .zima { background-image: url('zima.png'); }
+  .wiosna { background-image: url('wiosna.png'); }
+  .lato { background-image: url('lato.png'); }
+  .jesien { background-image: url('jesien.png'); }

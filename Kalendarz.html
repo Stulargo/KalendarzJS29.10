@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kartka z Kalendarza</title>
+  <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+
+<div id="kartka">
+  <div id="miesiacRok"></div>
+  <div id="data"></div>
+  <div id="dzienTygodnia"></div>
+  <div id="licznik"></div>
+</div>
+
+<script>
+  function aktualizujKalendarz() {
+
+    let dzien = 23;    
+    let miesiac = 5;  
+    let rok = 2024;    
+
+    let dataAktualna = new Date(rok, miesiac, dzien);
+    let dniTygodnia = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+    let miesiace = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+
+    let dzienTygodnia = dataAktualna.getDay();
+    let wigilia = new Date(rok, 11, 24); 
+    let dniDoWigilii = Math.ceil((wigilia - dataAktualna) / (1000 * 60 * 60 * 24)); 
+
+
+    if (dniDoWigilii < 0) {
+      rok += 1;  
+      wigilia = new Date(rok, 11, 24); 
+      dniDoWigilii = Math.ceil((wigilia - dataAktualna) / (1000 * 60 * 60 * 24));
+    }
+
+    document.getElementById("miesiacRok").textContent = `${miesiace[miesiac]} ${rok}`;
+    document.getElementById("data").textContent = dzien;
+    document.getElementById("dzienTygodnia").textContent = dniTygodnia[dzienTygodnia];
+    document.getElementById("dzienTygodnia").className = (dzienTygodnia === 0 ? "niedziela" : "");
+
+    if (dniDoWigilii > 0) {
+      document.getElementById("licznik").textContent = `Do Wigilii pozostało: ${dniDoWigilii} dni`;
+    } else if (dzien === 24 && miesiac === 11) {
+      document.getElementById("licznik").textContent = "To dzisiaj jest Wigilia!";
+    } else {
+      document.getElementById("licznik").textContent = `Do następnej Wigilii pozostało: 365 dni`;
+    }
+
+    if (miesiac === 11 || miesiac === 0 || miesiac === 1) {
+      document.body.className = 'zima';
+    } else if (miesiac >= 2 && miesiac <= 4) {
+      document.body.className = 'wiosna';
+    } else if (miesiac >= 5 && miesiac <= 7) {
+      document.body.className = 'lato';
+    } else {
+      document.body.className = 'jesien';
+    }
+  }
+
+  aktualizujKalendarz();
+  setInterval(aktualizujKalendarz, 24 * 60 * 60 * 1000); 
+</script>
+
+</body>
+</html>
