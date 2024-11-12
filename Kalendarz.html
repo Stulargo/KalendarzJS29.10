@@ -4,7 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kartka z Kalendarza</title>
-  <link rel="stylesheet" href="styl.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-size: cover;
+      transition: background-image 1s ease, background-color 1s ease;
+    }
+
+    #kartka {
+      width: 360px;
+      padding: 40px;
+      text-align: center;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      background-color: rgba(255, 255, 255, 0.95);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    #kartka:hover {
+      transform: scale(1.02);
+    }
+
+    #kartka::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    }
+
+    #miesiacRok {
+      font-size: 1.4em;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    #data {
+      font-size: 5.5em;
+      font-weight: 800;
+      color: #333;
+      margin: 20px 0;
+      letter-spacing: 1px;
+    }
+
+    #dzienTygodnia, #licznik {
+      font-size: 1.1em;
+      color: #666;
+      margin-top: 25px;
+    }
+
+    .niedziela {
+      color: red;
+      font-weight: bold;
+    }
+
+    .zima {
+      background-color: #cfe2f3; 
+    }
+
+    .wiosna {
+      background-color: #c9f1c2; 
+    }
+
+    .lato {
+      background-color: #ffeb99; 
+    }
+
+    .jesien {
+      background-color: #f4b942; 
+    }
+
+  </style>
 </head>
 <body>
 
@@ -17,9 +97,8 @@
 
 <script>
   function aktualizujKalendarz() {
-
-    let dzien = 23;    
-    let miesiac = 5;  
+    let dzien = 22;    
+    let miesiac = 11;  
     let rok = 2024;    
 
     let dataAktualna = new Date(rok, miesiac, dzien);
@@ -30,7 +109,6 @@
     let wigilia = new Date(rok, 11, 24); 
     let dniDoWigilii = Math.ceil((wigilia - dataAktualna) / (1000 * 60 * 60 * 24)); 
 
-
     if (dniDoWigilii < 0) {
       rok += 1;  
       wigilia = new Date(rok, 11, 24); 
@@ -40,7 +118,12 @@
     document.getElementById("miesiacRok").textContent = `${miesiace[miesiac]} ${rok}`;
     document.getElementById("data").textContent = dzien;
     document.getElementById("dzienTygodnia").textContent = dniTygodnia[dzienTygodnia];
-    document.getElementById("dzienTygodnia").className = (dzienTygodnia === 0 ? "niedziela" : "");
+    
+    if (dzienTygodnia === 0) {
+      document.getElementById("dzienTygodnia").classList.add("niedziela");
+    } else {
+      document.getElementById("dzienTygodnia").classList.remove("niedziela");
+    }
 
     if (dniDoWigilii > 0) {
       document.getElementById("licznik").textContent = `Do Wigilii pozostało: ${dniDoWigilii} dni`;
@@ -50,13 +133,22 @@
       document.getElementById("licznik").textContent = `Do następnej Wigilii pozostało: 365 dni`;
     }
 
-    if (miesiac === 11 || miesiac === 0 || miesiac === 1) {
+    const poczatekWiosny = new Date(rok, 2, 20);
+    const poczatekLata = new Date(rok, 5, 21);
+    const poczatekJesieni = new Date(rok, 8, 22);
+    const poczatekZimy = new Date(rok, 11, 21);
+
+    if (dataAktualna >= poczatekZimy || dataAktualna < poczatekWiosny) {
+      document.body.style.backgroundImage = "url('zima.png')";
       document.body.className = 'zima';
-    } else if (miesiac >= 2 && miesiac <= 4) {
+    } else if (dataAktualna >= poczatekWiosny && dataAktualna < poczatekLata) {
+      document.body.style.backgroundImage = "url('wiosna.png')";
       document.body.className = 'wiosna';
-    } else if (miesiac >= 5 && miesiac <= 7) {
+    } else if (dataAktualna >= poczatekLata && dataAktualna < poczatekJesieni) {
+      document.body.style.backgroundImage = "url('lato.png')";
       document.body.className = 'lato';
-    } else {
+    } else if (dataAktualna >= poczatekJesieni && dataAktualna < poczatekZimy) {
+      document.body.style.backgroundImage = "url('jesien.png')";
       document.body.className = 'jesien';
     }
   }
